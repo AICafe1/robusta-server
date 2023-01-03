@@ -11,7 +11,7 @@ jobs:
       - name: robusta
         uses: actions/checkout@v3
         with:
-          repository: AICafe/robusta
+          repository: AICafe1/robusta
           ref: main
           token: ${{ secrets.PASS }}
 
