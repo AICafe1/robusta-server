@@ -37,6 +37,16 @@ jobs:
       - run: cd data; npm install
 
       - run: npm run b-lnx
+      - run: cd data; npm run b-lnx
 
-      - run: ls -l bin
-      - run: ls -l data/node_modules
+      - uses: actions/upload-artifact@v3
+        with:
+          name: robusta
+          path: bin/robusta
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: data
+          path: data/bin/robusta
+
+      - run: ls -l node_modules/better-sqlite3
