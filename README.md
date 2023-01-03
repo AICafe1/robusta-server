@@ -1,4 +1,4 @@
 # robusta-server
 
 Auto-trading platform: Robusta
-Release: Server
+Release: Server & Data
