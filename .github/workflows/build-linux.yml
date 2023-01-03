@@ -28,4 +28,13 @@ jobs:
           token: ${{ secrets.PASS }}
           path: src
 
+      - name: Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - run: npm install
+      - run: cd data; npm install
+
       - run: ls -l
