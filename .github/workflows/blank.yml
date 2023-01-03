@@ -1,0 +1,17 @@
+name: build-linux
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: robusta
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe/robusta
+          token: ${{ secrets.PASS }}
+      
+      - run: ls
