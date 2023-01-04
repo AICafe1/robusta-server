@@ -36,17 +36,17 @@ jobs:
       - run: npm install
       - run: cd data; npm install
 
-      - run: npm run b-lnx -- --debug
+      - run: npm run b-lnx
       - run: cd data; npm run b-lnx
 
       - run: node src/license/private.ts --year=1 LICENSE.key
-      - run: DEBUG_PKG=1 bin/robusta --mode=manage > debug.log
+      - run: bin/robusta --mode=manage
       - run: ls -l robusta.sqlite
 
       - uses: actions/upload-artifact@v3
         with:
-          name: debug
-          path: debug.log
+          name: robusta
+          path: bin/robusta
 
       - uses: actions/upload-artifact@v3
         with:
