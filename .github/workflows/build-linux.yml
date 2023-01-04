@@ -33,9 +33,11 @@ jobs:
         with:
           node-version: 18
 
-      - run: npm install
+      - run: npm install --omit=optional
       - run: cd data; npm install
 
+      - run: npm run b-lnx
+      - run: bin/robusta --mode=npm install
       - run: npm run b-lnx
       - run: cd data; npm run b-lnx
 
