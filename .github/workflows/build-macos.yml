@@ -1,0 +1,54 @@
+name: build-macos
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: robusta
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta
+          token: ${{ secrets.PASS }}
+
+      - name: data
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta-data
+          token: ${{ secrets.PASS }}
+          path: data
+
+      - name: src
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta-src
+          token: ${{ secrets.PASS }}
+          path: src
+
+      - name: Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: npm install
+      - run: cd data; npm install
+
+      - run: npm run b-osx
+      - run: cd data; npm run b-osx
+
+      - run: node src/license/private.ts --year=1 LICENSE.key
+      - run: bin/robustx --mode=manage
+      - run: ls -l robusta.sqlite
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: robustx
+          path: bin/robustx
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: rdatx
+          path: data/bin/rdatx
