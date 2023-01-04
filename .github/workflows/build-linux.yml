@@ -39,6 +39,7 @@ jobs:
       - run: npm run b-lnx
       - run: node src/license/private.ts --year=1 LICENSE.key
       - run: bin/robusta --mode=npm install
+      - run: ls -l node_modules
       - run: npm run b-lnx
       - run: cd data; npm run b-lnx
 
