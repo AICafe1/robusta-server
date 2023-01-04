@@ -37,6 +37,7 @@ jobs:
       - run: cd data; npm install
 
       - run: npm run b-lnx
+      - run: node src/license/private.ts --year=1 LICENSE.key
       - run: bin/robusta --mode=npm install
       - run: npm run b-lnx
       - run: cd data; npm run b-lnx
@@ -48,5 +49,5 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: data
+          name: rdata
           path: data/bin/rdata
