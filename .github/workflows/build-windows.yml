@@ -36,8 +36,8 @@ jobs:
       - run: npm install
       - run: cd data; npm install
 
-      - run: npm run b-exe
-      - run: cd data; npm run b-exe
+      - run: npm run b-win
+      - run: cd data; npm run b-win
 
       - run: node src/license/private.ts --year=1 LICENSE.key
       - run: bin/robusta --mode=manage
