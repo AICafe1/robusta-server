@@ -1,0 +1,54 @@
+name: build-windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: robusta
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta
+          token: ${{ secrets.PASS }}
+
+      - name: data
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta-data
+          token: ${{ secrets.PASS }}
+          path: data
+
+      - name: src
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta-src
+          token: ${{ secrets.PASS }}
+          path: src
+
+      - name: Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: npm install
+      - run: cd data; npm install
+
+      - run: npm run b-exe
+      - run: cd data; npm run b-exe
+
+      - run: node src/license/private.ts --year=1 LICENSE.key
+      - run: bin/robusta --mode=manage
+      - run: Test-Path -Path robusta.sqlite -PathType leaf
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: robusta.exe
+          path: bin/robusta.exe
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: rdata.exe
+          path: data/bin/rdata.exe
