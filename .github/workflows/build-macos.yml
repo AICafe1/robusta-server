@@ -43,12 +43,25 @@ jobs:
       - run: bin/robustx --mode=manage
       - run: ls -l robusta.sqlite
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: robustx
-          path: bin/robustx
+      - run: |
+          mv bin/robustx robusta
+          mv data/bin/rdatx rdata
+          chmod +x robusta rdata
+          tar -czvf robusta-macos.tgz robusta
+          tar -czvf rdata-macos.tgz rdata
 
       - uses: actions/upload-artifact@v3
         with:
-          name: rdatx
-          path: data/bin/rdatx
+          name: robusta
+          path: robusta
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: rdata
+          path: rdata
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: *.tgz

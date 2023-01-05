@@ -47,21 +47,21 @@ jobs:
           mv bin/robusta .
           mv data/bin/rdata .
           chmod +x robusta rdata
-          tar -czvf robusta.tgz robusta
-          tar -czvf rdata.tgz rdata
+          tar -czvf robusta-linux.tgz robusta
+          tar -czvf rdata-linux.tgz rdata
 
       - uses: actions/upload-artifact@v3
         with:
+          name: robusta
           path: robusta
 
       - uses: actions/upload-artifact@v3
         with:
+          name: rdata
           path: rdata
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: |
-            robusta.tgz
-            rdata.tgz
+          files: *.tgz
