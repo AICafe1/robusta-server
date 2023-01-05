@@ -44,11 +44,11 @@ jobs:
       - run: ls -l robusta.sqlite
 
       - run: |
-        mv bin/robusta .
-        mv data/bin/rdata .
-        chmod +x robusta rdata
-        tar -czvf robusta.tgz robusta
-        tar -czvf rdata.tgz rdata
+          mv bin/robusta .
+          mv data/bin/rdata .
+          chmod +x robusta rdata
+          tar -czvf robusta.tgz robusta
+          tar -czvf rdata.tgz rdata
 
       - uses: actions/upload-artifact@v3
         with:
