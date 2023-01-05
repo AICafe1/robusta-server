@@ -10,6 +10,7 @@ curl -L https://github.com/AICafe1/robusta-server/releases/latest/download/rdata
 # Robusta Server
 curl -L https://github.com/AICafe1/robusta-server/releases/latest/download/robusta-linux.tgz | tar -xz
 ```
+Cron PATH=/usr/bin:/bin
 
 ## MacOS
 ```sh
