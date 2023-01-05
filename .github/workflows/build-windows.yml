@@ -52,3 +52,13 @@ jobs:
         with:
           name: rdata.exe
           path: data/bin/rdata.exe
+
+      - run: |
+          Compress-Archive bin/robusta.exe robusta.exe.zip
+          Compress-Archive data/bin/rdata.exe rdata.exe.zip
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: "*.exe.zip"
