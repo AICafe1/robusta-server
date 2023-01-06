@@ -13,7 +13,7 @@ jobs:
         with:
           repository: AICafe1/robusta
           token: ${{ secrets.PASS }}
-          submodules: true
+          submodules: recursive
           ref: code
 
       - name: Node.js 18
