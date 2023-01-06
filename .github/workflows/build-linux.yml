@@ -13,8 +13,21 @@ jobs:
         with:
           repository: AICafe1/robusta
           token: ${{ secrets.PASS }}
-          submodules: recursive
-          ref: code
+          ref: build
+
+      - name: data
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta-data
+          token: ${{ secrets.PASS }}
+          path: data
+
+      - name: src
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta-src
+          token: ${{ secrets.PASS }}
+          path: src
 
       - name: Node.js 18
         uses: actions/setup-node@v3

@@ -13,6 +13,7 @@ jobs:
         with:
           repository: AICafe1/robusta
           token: ${{ secrets.PASS }}
+          ref: build
 
       - name: data
         uses: actions/checkout@v3
