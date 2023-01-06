@@ -38,10 +38,10 @@ jobs:
       - run: cd data; npm install
 
       - run: npm run b-osx
-      - run: bin/robustx abi.js
       - run: cd data; npm run b-osx
 
       - run: node src/license/private.ts --year=1 LICENSE.key
+      - run: bin/robustx abi.js
       - run: bin/robustx --mode=manage
       - run: ls -l robusta.sqlite
 
