@@ -1,0 +1,57 @@
+name: data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 9 * * 1-5'
+    - cron: '45 9 * * 6'
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: robusta
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta
+          token: ${{ secrets.PASS }}
+
+      - name: data
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta-data
+          token: ${{ secrets.PASS }}
+          path: data
+
+      - name: colab
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta-colab
+          token: ${{ secrets.PASS }}
+          path: colab
+
+      - name: Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - run: cd data; npm install
+
+      - name: Python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - run: cd data; pip install -r requirements.txt
+
+      - name: Colab Data
+        run: python data/colab; python data/colab -m bnb; cd colab; tar -czf vndata.tar.gz *; zip -P ${{ secrets.ZIP }} ../vndata.tar.gz.zip vndata.tar.gz
+
+      - name: Colab Release
+        uses: softprops/action-gh-release@v1
+        with:
+          repository: algo-stocks/data
+          token: ${{ secrets.PASS }}
+          tag_name: vndata
+          files: vndata.tar.gz.zip
