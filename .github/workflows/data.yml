@@ -24,13 +24,6 @@ jobs:
           token: ${{ secrets.PASS }}
           path: data
 
-      - name: colab
-        uses: actions/checkout@v3
-        with:
-          repository: AICafe1/robusta-colab
-          token: ${{ secrets.PASS }}
-          path: colab
-
       - name: Node.js 16
         uses: actions/setup-node@v3
         with:
@@ -38,17 +31,30 @@ jobs:
 
       - run: cd data; npm install
 
+      - name: colab
+        if: github.event.schedule == '45 9 * * 6'
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/robusta-colab
+          token: ${{ secrets.PASS }}
+          path: colab
+
       - name: Python 3
+        if: github.event.schedule == '45 9 * * 6'
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - run: cd data; pip install -r requirements.txt
+      - name: Pip
+        if: github.event.schedule == '45 9 * * 6'
+        run: cd data; pip install -r requirements.txt
 
       - name: Colab Data
+        if: github.event.schedule == '45 9 * * 6'
         run: python data/colab; python data/colab -m bnb; cd colab; tar -czf vndata.tar.gz *; zip -P ${{ secrets.ZIP }} ../vndata.tar.gz.zip vndata.tar.gz
 
       - name: Colab Release
+        if: github.event.schedule == '45 9 * * 6'
         uses: softprops/action-gh-release@v1
         with:
           repository: algo-stocks/data
