@@ -52,11 +52,24 @@ jobs:
       - run: cd data; pip install -q -r requirements.txt
 
       # BNB Data
-      - name: BNB Review
+      - name: BNB
         if: env.bnb == 'true'
-        run: node data/download -m bnb -t review && node data/download -m bnb > /dev/null
-      
+        run: |
+          node data/download -m bnb -t review && node data/download -m bnb > /dev/null
+          node data/audit -m bnb > /dev/null
+
       # Robusta push
+      - name: Audit
+        id: audit
+        run: cat audit.txt && (echo 'r=false' > $GITHUB_OUTPUT) || (echo 'r=true' > $GITHUB_OUTPUT)
+
+      - name: Notify
+        if: steps.audit.outputs.r == 'false'
+        run: node data/audit/notify.js
+
+      - name: Push
+        if: steps.audit.outputs.r == 'true'
+        run: node data/audit/notify.js
 
       # Colab
       - name: Colab
