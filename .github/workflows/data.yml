@@ -5,6 +5,12 @@ on:
     - cron: '15 11 * * 1-5'
     - cron: '15 11 * * 6'
   workflow_dispatch:
+    inputs:
+      group:
+        type: choice
+        description: Run group
+        options:
+          - colab
 
 jobs:
   download:
@@ -41,11 +47,11 @@ jobs:
 
       # BNB Data
       - name: BNB Review
-        run: node data/download -m bnb -t review && node data/download -m bnb
+        run: node data/download -m bnb -t review && node data/download -m bnb > /dev/null
 
       # Colab Release Every Weekend
       - name: Colab
-        if: github.event.schedule == '15 11 * * 6' || github.event_name == 'workflow_dispatch'
+        if: github.event.schedule == '15 11 * * 6' || github.event.inputs.group == 'colab'
         uses: actions/checkout@v3
         with:
           repository: AICafe1/robusta-colab
