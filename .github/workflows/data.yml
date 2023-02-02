@@ -70,11 +70,10 @@ jobs:
       - name: Push
         if: steps.audit.outputs.r == 'true'
         run: |
-          git status
           git config user.name github
           git config user.email actions@github.com
-          git add csv
-          git remote -vvv
+          git add csv/
+          git push https://${{ secrets.PASS }}@github.com/AICafe1/robusta.git
 
       # Colab
       - name: Colab
