@@ -73,6 +73,7 @@ jobs:
           git config user.name github
           git config user.email actions@github.com
           git add csv/*
+          git status
           git remote set-url origin https://${{ secrets.PASS }}@github.com/AICafe1/robusta.git
           git push
 
