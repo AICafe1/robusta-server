@@ -53,12 +53,12 @@ jobs:
       # BNB Data
       - name: BNB Review
         run: node data/download -m bnb -t review && node data/download -m bnb > /dev/null
+      
+      # Robusta push
 
-      - run: echo "$colab"
-
-      # Colab Release Every Weekend
+      # Colab
       - name: Colab
-        if: ${{ env.colab }}
+        if: env.colab == 'true'
         uses: actions/checkout@v3
         with:
           repository: AICafe1/robusta-colab
@@ -66,11 +66,11 @@ jobs:
           path: colab
 
       - name: Colab Data
-        if: github.event.schedule == '15 11 * * 6'
+        if: env.colab == 'true'
         run: python data/colab; python data/colab -m bnb; cd colab; tar -czf vndata.tar.gz *; zip -P ${{ secrets.ZIP }} ../vndata.tar.gz.zip vndata.tar.gz
 
       - name: Colab Release
-        if: github.event.schedule == '15 11 * * 6'
+        if: env.colab == 'true'
         uses: softprops/action-gh-release@v1
         with:
           repository: algo-stocks/data
