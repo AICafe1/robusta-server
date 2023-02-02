@@ -79,6 +79,19 @@ jobs:
           git commit -m "csv"
           git push
 
+      # VNQA
+      - name: VNQA
+        if: env.vnqa == 'true'
+        uses: actions/checkout@v3
+        with:
+          repository: AICafe1/vnqa
+          token: ${{ secrets.PASS }}
+          path: vnqa
+
+      - name: VNQA Free
+        if: env.vnqa == 'true'
+        run: sh data/vnqa/data.sh
+
       # Colab
       - name: Colab
         if: env.colab == 'true'
