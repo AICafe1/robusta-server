@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Base Steps
       - name: robusta
         uses: actions/checkout@v3
         with:
@@ -38,8 +39,13 @@ jobs:
 
       - run: cd data; pip install -q -r requirements.txt
 
+      # BNB Data
+      - name: BNB Review
+        run: node data/download -m bnb -t review && node data/download -m bnb
+
+      # Colab Release Every Weekend
       - name: Colab
-        if: github.event.schedule == '15 11 * * 6'
+        if: github.event.schedule == '15 11 * * 6' || github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v3
         with:
           repository: AICafe1/robusta-colab
