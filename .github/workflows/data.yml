@@ -11,10 +11,11 @@ on:
         description: Run group
         options:
           - all
+          - bnb
           - colab
 
 env:
-  colab: github.event.schedule == '15 11 * * 6' || github.event.inputs.group == 'colab' || github.event.inputs.group == 'all'
+  colab: ${{ github.event.schedule == '15 11 * * 6' || github.event.inputs.group == 'colab' || github.event.inputs.group == 'all' }}
 
 jobs:
   download:
@@ -57,7 +58,7 @@ jobs:
 
       # Colab Release Every Weekend
       - name: Colab
-        if: env.colab == 'true'
+        if: env.colab
         uses: actions/checkout@v3
         with:
           repository: AICafe1/robusta-colab
