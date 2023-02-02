@@ -15,6 +15,7 @@ on:
           - colab
 
 env:
+  bnb: ${{ github.event.inputs.group == 'bnb' || github.event.inputs.group == 'all' }}
   colab: ${{ github.event.schedule == '15 11 * * 6' || github.event.inputs.group == 'colab' || github.event.inputs.group == 'all' }}
 
 jobs:
@@ -52,6 +53,7 @@ jobs:
 
       # BNB Data
       - name: BNB Review
+        if: env.bnb == 'true'
         run: node data/download -m bnb -t review && node data/download -m bnb > /dev/null
       
       # Robusta push
