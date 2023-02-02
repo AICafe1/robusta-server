@@ -72,8 +72,9 @@ jobs:
         run: |
           git config user.name github
           git config user.email actions@github.com
-          git add csv/
-          git push https://${{ secrets.PASS }}@github.com/AICafe1/robusta.git
+          git add csv/*
+          git remote set-url origin https://${{ secrets.PASS }}@github.com/AICafe1/robusta.git
+          git push
 
       # Colab
       - name: Colab
