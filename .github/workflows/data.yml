@@ -93,11 +93,11 @@ jobs:
       - name: VNQA Free
         if: env.vnqa == 'true'
         run: |
+          cd vnqa
           git config user.name github
           git config user.email actions@github.com
+          cd ..
           sh data/vnqa/data.sh
-          cd vnqa && ls -la && git status
-          cd vnqa && git add docs && git commit -m "`date`" && git push
 
       # Colab
       - name: Colab
