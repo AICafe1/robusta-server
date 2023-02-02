@@ -69,7 +69,7 @@ jobs:
 
       - name: Colab Data
         if: env.colab == 'true'
-        run: python data/colab; python data/colab -m bnb; cd colab; tar -czf vndata.tar.gz *; zip -P ${{ secrets.ZIP }} ../vndata.tar.gz.zip vndata.tar.gz
+        run: python data/colab > /dev/null; python data/colab -m bnb > /dev/null; cd colab; tar -czf vndata.tar.gz *; zip -P ${{ secrets.ZIP }} ../vndata.tar.gz.zip vndata.tar.gz
 
       - name: Colab Release
         if: env.colab == 'true'
