@@ -58,7 +58,7 @@ jobs:
 
       # Colab Release Every Weekend
       - name: Colab
-        if: env.colab
+        if: ${{ env.colab }}
         uses: actions/checkout@v3
         with:
           repository: AICafe1/robusta-colab
