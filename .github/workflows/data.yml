@@ -76,8 +76,8 @@ jobs:
         if: env.daily == 'true'
         run: |
           node data/download -t daily,minute,review,propy,oi,bond > /dev/null
-          node data/download/vn/helpers -t f | xargs -n 1 -I {} node data/download -t index -s {} > /dev/null
-          node data/download/vn/helpers -t e | xargs -n 1 -I {} node data/download -t daily -s {} > /dev/null
+          node data/download/vn/helpers -t f | xargs -I {} node data/download -t index -s {} > /dev/null
+          node data/download/vn/helpers -t e | xargs -I {} node data/download -t daily -s {} > /dev/null
 
       # VN
       - name: VN Audit
