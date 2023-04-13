@@ -32,7 +32,6 @@ jobs:
     steps:
       # Base Steps
       - name: robusta
-        if: github.event_name == 'schedule' || github.event.inputs.group != 'vnqa'
         uses: actions/checkout@v3
         with:
           repository: AICafe1/robusta
