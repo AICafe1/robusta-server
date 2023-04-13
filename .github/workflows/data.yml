@@ -3,8 +3,8 @@ name: data
 on:
   schedule:
     - cron: '15 7 * * 1,4'
-    - cron: '15 11 * * 1-5'
-    - cron: '15 11 * * 6'
+    - cron: '15 9 * * 1-5'
+    - cron: '15 9 * * 6'
   workflow_dispatch:
     inputs:
       group:
@@ -20,10 +20,10 @@ on:
 
 env:
   bnb: ${{ github.event_name == 'schedule' || github.event.inputs.group == 'bnb' || github.event.inputs.group == 'all' }}
-  weekly: ${{ github.event.schedule == '15 11 * * 6' || github.event.inputs.group == 'weekly' || github.event.inputs.group == 'all' }}
-  daily: ${{ github.event.schedule == '15 11 * * 1-5' || github.event.inputs.group == 'daily' || github.event.inputs.group == 'all' }}
-  vnqa: ${{ github.event.schedule == '15 11 * * 1-5' || github.event.inputs.group == 'vnqa' || github.event.inputs.group == 'all' }}
-  colab: ${{ github.event.schedule == '15 11 * * 6' || github.event.inputs.group == 'colab' || github.event.inputs.group == 'all' }}
+  weekly: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'weekly' || github.event.inputs.group == 'all' }}
+  daily: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'daily' || github.event.inputs.group == 'all' }}
+  vnqa: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'vnqa' || github.event.inputs.group == 'all' }}
+  colab: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'colab' || github.event.inputs.group == 'all' }}
 
 jobs:
   download:
