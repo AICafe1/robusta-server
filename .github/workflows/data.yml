@@ -93,7 +93,7 @@ jobs:
       # Robusta push
       - name: Audit
         id: audit
-        if: github.event_name == 'schedule' || github.event.inputs.group != 'feather'
+        if: github.event_name == 'schedule' || (github.event.inputs.group != 'feather' && github.event.inputs.group != 'colab' && github.event.inputs.group != 'vnqa')
         run: cat audit.txt && (echo 'r=false' > $GITHUB_OUTPUT) || (echo 'r=true' > $GITHUB_OUTPUT)
 
       - name: Notify
