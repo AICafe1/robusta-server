@@ -17,6 +17,7 @@ on:
           - daily
           - vnqa
           - colab
+          - feather
 
 env:
   bnb: ${{ github.event_name == 'schedule' || github.event.inputs.group == 'bnb' || github.event.inputs.group == 'all' }}
@@ -24,6 +25,7 @@ env:
   daily: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'daily' || github.event.inputs.group == 'all' }}
   vnqa: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'vnqa' || github.event.inputs.group == 'all' }}
   colab: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'colab' || github.event.inputs.group == 'all' }}
+  feather: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'feather' || github.event.inputs.group == 'all' }}
 
 jobs:
   download:
@@ -32,6 +34,7 @@ jobs:
     steps:
       # Base Steps
       - name: robusta
+        if: github.event_name == 'schedule' || github.event.inputs.group != 'feather'
         uses: actions/checkout@v3
         with:
           repository: AICafe1/robusta
@@ -115,7 +118,7 @@ jobs:
           token: ${{ secrets.PASS }}
           path: vnqa
 
-      - name: VNQA Free
+      - name: VNQA Release
         if: env.vnqa == 'true'
         run: |
           cd vnqa
@@ -145,3 +148,17 @@ jobs:
           token: ${{ secrets.PASS }}
           tag_name: vndata
           files: vndata.tar.gz.zip
+
+      # Feather
+      - name: Feather
+        if: env.feather == 'true'
+        run: sh data/vnqa/feather.sh
+
+      - name: Feather Release
+        if: env.feather == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          repository: algo-stocks/data
+          token: ${{ secrets.PASS }}
+          tag_name: v2.0
+          files: cophieu68.feather.zip
