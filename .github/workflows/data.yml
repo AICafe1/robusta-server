@@ -87,7 +87,7 @@ jobs:
         run: |
           mv error.sh rerun.sh && (sh rerun.sh > /dev/null) && rm rerun.sh || echo 1
           mv error.sh rerun.sh && (sh rerun.sh > /dev/null) && rm rerun.sh || echo 2
-          mv error.sh rerun.sh && (sh rerun.sh > /dev/null) && rm rerun.sh || echo 3
+          mv error.sh rerun.sh && sh rerun.sh && rm rerun.sh || echo 3
           node data/audit > /dev/null
 
       # Robusta push
