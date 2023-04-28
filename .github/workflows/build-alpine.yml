@@ -37,7 +37,7 @@ jobs:
       - name: install data
         uses: docker://node:18-alpine
         with:
-          args: sh -c 'cd data; npm ci'
+          args: sh -c "cd data; npm ci"
 
       - name: Node.js Alpine Build
         uses: docker://node:18-alpine
