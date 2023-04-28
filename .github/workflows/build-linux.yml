@@ -34,8 +34,8 @@ jobs:
         with:
           node-version: 18
 
-      - run: npm install
-      - run: cd data; npm install
+      - run: npm ci
+      - run: cd data; npm ci
 
       - run: npm run b-lnx
       - run: cd data; npm run b-lnx
