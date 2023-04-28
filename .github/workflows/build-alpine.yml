@@ -29,6 +29,11 @@ jobs:
           token: ${{ secrets.PASS }}
           path: src
 
+      - name: npm ci
+        uses: docker://node:18-alpine
+        with:
+          args: npm ci
+
       - name: Node.js Alpine Build
         uses: docker://node:18-alpine
         with:
