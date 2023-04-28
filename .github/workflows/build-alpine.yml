@@ -29,7 +29,7 @@ jobs:
           token: ${{ secrets.PASS }}
           path: src
 
-      - name: Node.js Alpine Build
+      - name: Node.js 18 Alpine Build
         uses: docker://node:18-alpine
         with:
           args: sh -c "npm ci && npm run b-alp && cd data && npm ci && npm run b-alp && cd .. && node src/license/private.ts --year=1 LICENSE.key && bin/robustalp abi.js && bin/robustalp --mode=manage && ls -l robusta.sqlite"
