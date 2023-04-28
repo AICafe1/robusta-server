@@ -37,7 +37,7 @@ jobs:
       - run: |
           sudo mv bin/robustalp robusta
           sudo mv data/bin/rdatalp rdata
-          chmod +x robusta rdata
+          sudo chmod +x robusta rdata
           tar -czvf robusta-alpine.tgz robusta
           tar -czvf rdata-alpine.tgz rdata
 
