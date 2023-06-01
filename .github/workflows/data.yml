@@ -101,11 +101,11 @@ jobs:
         run: node data/audit/notify.js
 
       - name: Push
-        if: steps.audit.outputs.r == 'true'
         run: |
           git config user.name github
           git config user.email actions@github.com
           git add csv
+          grep -Eo '^[^ ]+' audit.txt | xargs git reset
           git commit -m "csv"
           git push
 
