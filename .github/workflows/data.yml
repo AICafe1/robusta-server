@@ -104,7 +104,6 @@ jobs:
         run: |
           git config user.name github
           git config user.email actions@github.com
-          git diff --name-only csv/ > audit.txt
           git add csv
           [[ ! -f audit.txt ]] || grep -Eo '^[^ ]+' audit.txt | xargs git reset
           git commit -m "csv"
