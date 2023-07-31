@@ -161,4 +161,4 @@ jobs:
           repository: algo-stocks/data
           token: ${{ secrets.PASS }}
           tag_name: v2.0
-          files: cophieu68.feather.zip
+          files: CafeF.feather.zip
