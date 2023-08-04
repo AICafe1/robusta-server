@@ -2,6 +2,7 @@
 
 * Auto-trading platform: Robusta
 * Release: Server & Data
+* Auto: Update data
 
 ## Linux
 ```sh
