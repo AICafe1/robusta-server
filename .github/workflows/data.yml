@@ -106,7 +106,7 @@ jobs:
           git config user.email actions@github.com
           git add csv
           [[ ! -f audit.txt ]] || grep -Eo '^[^ ]+' audit.txt | xargs git reset
-          git commit -m "csv"
+          git commit -m "csv" || echo ""
           git push
 
       # VNQA
