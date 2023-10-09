@@ -65,30 +65,30 @@ jobs:
       - name: BNB
         if: env.bnb == 'true'
         run: |
-          node data/download -m bnb -t review && node data/download -m bnb > /dev/null
-          node data/audit -m bnb > /dev/null
+          node data/download -m bnb -t review && node data/download -m bnb
+          node data/audit -m bnb
 
       # VN Weekly
       - name: VN Weekly
         if: env.weekly == 'true'
-        run: node data/download > /dev/null
+        run: node data/download
 
       # VN Daily
       - name: VN Daily
         if: env.daily == 'true'
         run: |
-          node data/download > /dev/null
-          node data/download/vn/helpers -t f | xargs -I {} node data/download -t index -s {} > /dev/null
-          node data/download/vn/helpers -t e | xargs -I {} node data/download -t daily -s {} > /dev/null
+          node data/download
+          node data/download/vn/helpers -t f | xargs -I {} node data/download -t index -s {}
+          node data/download/vn/helpers -t e | xargs -I {} node data/download -t daily -s {}
 
       # VN
       - name: VN Audit
         if: env.daily == 'true' || env.weekly == 'true'
         run: |
-          mv error.sh rerun.sh && (sh rerun.sh > /dev/null) && rm rerun.sh || echo 1
-          mv error.sh rerun.sh && (sh rerun.sh > /dev/null) && rm rerun.sh || echo 2
+          mv error.sh rerun.sh && sh rerun.sh && rm rerun.sh || echo 1
+          mv error.sh rerun.sh && sh rerun.sh && rm rerun.sh || echo 2
           mv error.sh rerun.sh && sh rerun.sh && rm rerun.sh || echo 3
-          node data/audit > /dev/null
+          node data/audit
 
       # Robusta push
       - name: Audit
