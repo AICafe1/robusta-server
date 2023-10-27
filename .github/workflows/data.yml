@@ -85,9 +85,9 @@ jobs:
       - name: VN Audit
         if: env.daily == 'true' || env.weekly == 'true'
         run: |
-          mv error.sh rerun.sh && sh rerun.sh && rm rerun.sh || echo 1
-          mv error.sh rerun.sh && sh rerun.sh && rm rerun.sh || echo 2
-          mv error.sh rerun.sh && sh rerun.sh && rm rerun.sh || echo 3
+          ls error.sh && node data/error.js && sh rerun.sh && rm rerun.sh || echo 1
+          ls error.sh && node data/error.js && sh rerun.sh && rm rerun.sh || echo 2
+          ls error.sh && node data/error.js && sh rerun.sh && rm rerun.sh || echo 3
           node data/audit
 
       # Robusta push
