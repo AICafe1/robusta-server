@@ -109,6 +109,22 @@ jobs:
           git commit -m "csv" || echo ""
           git push
 
+      # Robusta Release
+      - name: Robusta Release
+        run: |
+          git restore csv
+          tar -czf bnb.tgz csv/bnb
+          tar -czf vn.tgz csv/vn
+          zip -P ${{ secrets.ZIP }} vn.tgz.zip vn.tgz
+
+      - name: Robusta Release v1.0.0
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.0
+          files: |
+            bnb.tgz
+            vn.tgz.zip
+
       # VNQA
       - name: VNQA
         if: env.vnqa == 'true'
