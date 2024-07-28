@@ -9,21 +9,21 @@ jobs:
 
     steps:
       - name: robusta
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: AICafe1/robusta
           token: ${{ secrets.PASS }}
           ref: build
 
       - name: data
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: AICafe1/robusta-data
           token: ${{ secrets.PASS }}
           path: data
 
       - name: src
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: AICafe1/robusta-src
           token: ${{ secrets.PASS }}
@@ -41,18 +41,18 @@ jobs:
           tar -czvf robusta-alpine.tgz robusta
           tar -czvf rdata-alpine.tgz rdata
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: robusta
           path: robusta
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: rdata
           path: rdata
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: "*.tgz"
