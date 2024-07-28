@@ -35,27 +35,27 @@ jobs:
       # Base Steps
       - name: robusta
         if: github.event_name == 'schedule' || github.event.inputs.group != 'feather'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: AICafe1/robusta
           token: ${{ secrets.PASS }}
 
       - name: data
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: AICafe1/robusta-data
           token: ${{ secrets.PASS }}
           path: data
 
       - name: Node.js 16
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 16
 
       - run: cd data; npm install
 
       - name: Python 3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.9'
 
@@ -118,7 +118,7 @@ jobs:
           zip -P ${{ secrets.ZIP }} vn.tgz.zip vn.tgz
 
       - name: Robusta Release v1.0.0
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.0
           files: |
@@ -128,7 +128,7 @@ jobs:
       # VNQA
       - name: VNQA
         if: env.vnqa == 'true'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: AICafe1/vnqa
           token: ${{ secrets.PASS }}
@@ -146,7 +146,7 @@ jobs:
       # Colab
       - name: Colab
         if: env.colab == 'true'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: AICafe1/robusta-colab
           token: ${{ secrets.PASS }}
@@ -158,7 +158,7 @@ jobs:
 
       - name: Colab Release
         if: env.colab == 'true'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           repository: algo-stocks/data
           token: ${{ secrets.PASS }}
@@ -172,7 +172,7 @@ jobs:
 
       - name: Feather Release
         if: env.feather == 'true'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           repository: algo-stocks/data
           token: ${{ secrets.PASS }}
