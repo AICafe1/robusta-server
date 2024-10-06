@@ -38,5 +38,5 @@ jobs:
       - run: cd data; npm ci
       - run: cd app; npm ci
 
-      - run: cd app; npm run build:win
       - uses: fawazahmed0/action-debug-vscode@main
+      # - run: cd app; npm run build:win
