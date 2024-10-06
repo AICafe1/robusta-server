@@ -39,4 +39,6 @@ jobs:
       - run: cd app; npm ci
 
       - uses: fawazahmed0/action-debug-vscode@main
+        env:
+          token: ${{ secrets.PASS }}
       # - run: cd app; npm run build:win
