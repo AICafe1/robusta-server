@@ -40,5 +40,5 @@ jobs:
 
       - uses: fawazahmed0/action-debug-vscode@main
         env:
-          token: ${{ secrets.PASS }}
+          GH_TOKEN: ${{ secrets.PASS }}
       # - run: cd app; npm run build:win
