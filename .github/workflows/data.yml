@@ -80,6 +80,7 @@ jobs:
           node data/download
           node data/download/vn/helpers -t f | xargs -I {} node data/download -t index -s {}
           node data/download/vn/helpers -t e | xargs -I {} node data/download -t daily -s {}
+          python data/download/vn/top.py
 
       # VN
       - name: VN Audit
