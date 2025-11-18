@@ -48,14 +48,15 @@ jobs:
           token: ${{ secrets.PASS }}
           path: data
 
-      - name: Node.js 16
+      - name: Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 24
 
       - run: cd data; npm install
 
-      - run: cd /usr/local/bin; wget -q -O - https://github.com/AICafe1/robusta-server/releases/download/v1.0.2/chrome.tgz | tar -xz
+      - name: Chrome curl
+        run: cd /usr/local/bin; wget -q -O - https://github.com/AICafe1/robusta-server/releases/download/v1.0.2/chrome.tgz | tar -xz
 
       - name: Python 3
         uses: actions/setup-python@v5
