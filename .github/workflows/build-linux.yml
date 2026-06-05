@@ -3,6 +3,11 @@ name: build-linux
 on:
   workflow_dispatch:
 
+env:
+  npm_config_build_from_source: "true"
+  CFLAGS: "-march=x86-64-v3"
+  CXXFLAGS: "-march=x86-64-v3"
+
 jobs:
   build:
     runs-on: ubuntu-latest
