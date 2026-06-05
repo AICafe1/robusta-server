@@ -42,6 +42,8 @@ jobs:
       - run: npm i
       - run: cd data; npm i
 
+      - uses: fawazahmed0/action-debug-vscode@main
+
       - run: npm run b-lnx
       - run: cd data; npm run b-lnx
 
