@@ -59,12 +59,12 @@ jobs:
           tar -czvf robusta-linux.tgz robusta
           tar -czvf rdata-linux.tgz rdata
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: robusta
           path: robusta
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: rdata
           path: rdata
