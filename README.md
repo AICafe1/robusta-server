@@ -8,8 +8,10 @@
 ```sh
 # Robusta Data
 curl -L https://github.com/AICafe1/robusta-server/releases/latest/download/rdata-linux.tgz | tar -xz
+curl -L https://github.com/AICafe1/robusta-server/releases/latest/download/rdata-linux.tar.zst | tar --zstd -x
 # Robusta Server
 curl -L https://github.com/AICafe1/robusta-server/releases/latest/download/robusta-linux.tgz | tar -xz
+curl -L https://github.com/AICafe1/robusta-server/releases/latest/download/robusta-linux.tar.zst | tar --zstd -x
 ```
 Cron PATH=/usr/bin:/bin
 
