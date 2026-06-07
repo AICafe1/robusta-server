@@ -29,30 +29,4 @@ jobs:
           token: ${{ secrets.PASS }}
           path: src
 
-      - name: Node.js 24 Alpine Build
-        uses: docker://node:24-alpine
-        with:
-          args: sh -c "npm i && npm run b-alp && cd data && npm i && npm run b-alp && cd .. && node src/license/private.ts --year=1 LICENSE.key && bin/robustalp abi.js && bin/robustalp --mode=manage && ls -l robusta.sqlite"
-
-      - run: |
-          sudo mv bin/robustalp robusta
-          sudo mv data/bin/rdatalp rdata
-          sudo chmod +x robusta rdata
-          tar -czvf robusta-alpine.tgz robusta
-          tar -czvf rdata-alpine.tgz rdata
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: robusta
-          path: robusta
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: rdata
-          path: rdata
-
-      - name: Release
-        uses: softprops/action-gh-release@v3
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: "*.tgz"
+      - uses: fawazahmed0/action-debug-vscode@main
