@@ -43,7 +43,6 @@ jobs:
       - run: cd data; npm i
 
       - run: npm run b-lnx
-      - run: cd data; npm run b-lnx
 
       - run: node src/license/private.ts --year=1 LICENSE.key
       - run: bin/robusta abi.js
@@ -52,22 +51,14 @@ jobs:
 
       - run: |
           mv bin/robusta .
-          mv data/bin/rdata .
-          chmod +x robusta rdata
+          chmod +x robusta
           tar --zstd -cf robusta-linux.tar.zst robusta
-          tar --zstd -cf rdata-linux.tar.zst rdata
           tar -czvf robusta-linux.tgz robusta
-          tar -czvf rdata-linux.tgz rdata
 
       - uses: actions/upload-artifact@v7
         with:
           name: robusta
           path: robusta
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: rdata
-          path: rdata
 
       - name: Release
         uses: softprops/action-gh-release@v3
