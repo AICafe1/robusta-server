@@ -7,6 +7,8 @@
 ## Linux
 ```sh
 curl -L https://github.com/AICafe1/robusta-server/releases/latest/download/robusta-linux.tgz | tar -xz
+```
+```sh
 curl -L https://github.com/AICafe1/robusta-server/releases/latest/download/robusta-linux.tar.zst | tar --zstd -x
 ```
 Cron PATH=/usr/bin:/bin
