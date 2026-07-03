@@ -2,6 +2,11 @@ name: Intraday Data
 
 on:
   workflow_dispatch:
+    inputs:
+      debug:
+        type: boolean
+        description: Run debug
+        default: false
 
 jobs:
   download:
@@ -27,4 +32,6 @@ jobs:
 
       - run: cd data; npm install
 
-      - uses: fawazahmed0/action-debug-vscode@main
+      - name: VSCode
+        if: ${{ inputs.debug == true }}
+        uses: fawazahmed0/action-debug-vscode@main
