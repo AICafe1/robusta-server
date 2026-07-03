@@ -1,0 +1,30 @@
+name: Intraday Data
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    env:
+      DNSE_KEY: ${{ secrets.DNSE_KEY }}
+      DNSE_SEC: ${{ secrets.DNSE_SEC }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: data
+        uses: actions/checkout@v6
+        with:
+          repository: AICafe1/robusta-data
+          token: ${{ secrets.PASS }}
+          path: data
+
+      - name: Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - run: cd data; npm install
+
+      - uses: fawazahmed0/action-debug-vscode@main
