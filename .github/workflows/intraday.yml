@@ -29,10 +29,37 @@ jobs:
 
       - run: mkdir csv; cd data; npm install
 
+      - name: Download intraday
+        env:
+          DNSE_KEY: ${{ secrets.DNSE_KEY }}
+          DNSE_SEC: ${{ secrets.DNSE_SEC }}
+        run: |
+          wget -qP csv https://github.com/AICafe1/robusta-server/releases/download/v1.0.1/metadata.zip
+          unzip -qP ${{ secrets.ZIP }} csv/metadata.zip -d csv
+
       - name: VSCode
         if: ${{ inputs.debug == true }}
         env:
           DNSE_KEY: ${{ secrets.DNSE_KEY }}
           DNSE_SEC: ${{ secrets.DNSE_SEC }}
-          ZIP: ${{ secrets.ZIP }}
+          ZP: ${{ secrets.ZIP }}
+        uses: fawazahmed0/action-debug-vscode@main
+
+      - name: Make zip
+        shell: bash
+        run: |
+          cd csv
+          find . -mindepth 3 -maxdepth 3 -type d -print0 | while IFS= read -r -d '' folder; do
+            file=$(echo "${folder:2}" | sed 's/\//-/g')
+            wget -q https://github.com/AICafe1/robusta-server/releases/download/v1.0.1/$file.zip
+            zip -rqP ${{ secrets.ZIP }} $file.zip "${folder:2}/"
+          done
+          zip -qP ${{ secrets.ZIP }} metadata.zip *.json
+
+      - name: VSCode After
+        if: ${{ inputs.debug == true }}
+        env:
+          DNSE_KEY: ${{ secrets.DNSE_KEY }}
+          DNSE_SEC: ${{ secrets.DNSE_SEC }}
+          ZP: ${{ secrets.ZIP }}
         uses: fawazahmed0/action-debug-vscode@main
