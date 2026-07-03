@@ -62,4 +62,5 @@ jobs:
         with:
           tag_name: v1.0.1
           working_directory: csv
-          files: *.zip
+          files: |
+            *.zip
