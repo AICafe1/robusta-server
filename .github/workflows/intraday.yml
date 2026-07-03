@@ -5,15 +5,12 @@ on:
     inputs:
       debug:
         type: boolean
-        description: Run debug
+        description: VSCode
         default: false
 
 jobs:
   download:
     runs-on: ubuntu-latest
-    env:
-      DNSE_KEY: ${{ secrets.DNSE_KEY }}
-      DNSE_SEC: ${{ secrets.DNSE_SEC }}
 
     steps:
       - uses: actions/checkout@v6
@@ -30,8 +27,12 @@ jobs:
         with:
           node-version: 24
 
-      - run: cd data; npm install
+      - run: mkdir csv; cd data; npm install
 
       - name: VSCode
         if: ${{ inputs.debug == true }}
+        env:
+          DNSE_KEY: ${{ secrets.DNSE_KEY }}
+          DNSE_SEC: ${{ secrets.DNSE_SEC }}
+          ZIP: ${{ secrets.ZIP }}
         uses: fawazahmed0/action-debug-vscode@main
