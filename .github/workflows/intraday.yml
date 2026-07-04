@@ -13,6 +13,8 @@ on:
 jobs:
   download:
     runs-on: ubuntu-latest
+    env:
+      REPO: https://github.com/AICafe1/robusta-server/releases/download
 
     steps:
       - uses: actions/checkout@v6
@@ -44,7 +46,8 @@ jobs:
           DNSE_KEY: ${{ secrets.DNSE_KEY }}
           DNSE_SEC: ${{ secrets.DNSE_SEC }}
         run: |
-          wget -qP csv https://github.com/AICafe1/robusta-server/releases/download/v1.0.1/metadata.zip
+          wget -qP csv $REPO/v1.0.1/metadata.zip
+          [ -s csv/metadata.zip ] || wget -qP csv $REPO/v1.0.3/metadata.zip
           unzip -qP ${{ secrets.ZIP }} csv/metadata.zip -d csv
           node data/download -m dat
           node data/download -m dat
@@ -55,7 +58,8 @@ jobs:
           cd csv
           find . -mindepth 3 -maxdepth 3 -type d -print0 | while IFS= read -r -d '' folder; do
             file=$(echo "${folder:2}" | sed 's/\//-/g')
-            wget -q https://github.com/AICafe1/robusta-server/releases/download/v1.0.1/$file.zip
+            wget -q $REPO/v1.0.1/$file.zip
+            [ -s $file.zip ] || wget -q $REPO/v1.0.3/$file.zip
             zip -rqP ${{ secrets.ZIP }} $file.zip "${folder:2}/"
           done
           zip -qP ${{ secrets.ZIP }} metadata.zip *.json
@@ -64,6 +68,14 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           tag_name: v1.0.1
+          working_directory: csv
+          files: |
+            *.zip
+
+      - name: Release v1.0.3
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v1.0.3
           working_directory: csv
           files: |
             *.zip
