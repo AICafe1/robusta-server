@@ -1,6 +1,8 @@
 name: Intraday Data
 
 on:
+  schedule:
+    - cron: '5 13 * * *'
   workflow_dispatch:
     inputs:
       debug:
@@ -44,6 +46,7 @@ jobs:
         run: |
           wget -qP csv https://github.com/AICafe1/robusta-server/releases/download/v1.0.1/metadata.zip
           unzip -qP ${{ secrets.ZIP }} csv/metadata.zip -d csv
+          node data/download -m dat
           node data/download -m dat
 
       - name: Make zip
