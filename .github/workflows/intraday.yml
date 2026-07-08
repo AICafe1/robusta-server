@@ -60,7 +60,7 @@ jobs:
             file=$(echo "${folder:2}" | sed 's/\//-/g')
             [ -s $file.zip ] || wget -q $REPO/v1.0.1/$file.zip
             [ -s $file.zip ] || wget -q $REPO/v1.0.3/$file.zip
-            zip -rqP ${{ secrets.ZIP }} $file.zip "${folder:2}/"
+            zip -ruqP ${{ secrets.ZIP }} $file.zip "${folder:2}/"
           done
           zip -qP ${{ secrets.ZIP }} metadata.zip *.json
 
