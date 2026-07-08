@@ -58,7 +58,7 @@ jobs:
           cd csv
           find . -mindepth 3 -maxdepth 3 -type d -print0 | while IFS= read -r -d '' folder; do
             file=$(echo "${folder:2}" | sed 's/\//-/g')
-            wget -q $REPO/v1.0.1/$file.zip
+            [ -s $file.zip ] || wget -q $REPO/v1.0.1/$file.zip
             [ -s $file.zip ] || wget -q $REPO/v1.0.3/$file.zip
             zip -rqP ${{ secrets.ZIP }} $file.zip "${folder:2}/"
           done
