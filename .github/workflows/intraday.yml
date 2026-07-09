@@ -50,7 +50,6 @@ jobs:
           [ -s csv/metadata.zip ] || wget -qP csv $REPO/v1.0.3/metadata.zip
           unzip -qP ${{ secrets.ZIP }} csv/metadata.zip -d csv
           node data/download -m dat
-          node data/download -m dat
 
       - name: Make zip
         shell: bash
