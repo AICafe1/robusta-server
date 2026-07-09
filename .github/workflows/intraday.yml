@@ -52,7 +52,6 @@ jobs:
           node data/download -m dat
 
       - name: Make zip
-        shell: bash
         run: |
           cd csv
           find . -mindepth 3 -maxdepth 3 -type d -print0 | while IFS= read -r -d '' folder; do
@@ -90,7 +89,6 @@ jobs:
           node data/download -m dat
 
       - name: Make zip 2
-        shell: bash
         run: |
           cd csv
           find . -mindepth 3 -maxdepth 3 -type d -print0 | while IFS= read -r -d '' folder; do
