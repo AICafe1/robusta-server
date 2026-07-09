@@ -57,8 +57,8 @@ jobs:
           find . -mindepth 3 -maxdepth 3 -type d -print0 | while IFS= read -r -d '' folder; do
             echo $folder
             file=$(echo "${folder:2}" | sed 's/\//-/g')
-            [ -s $file.zip ] || wget -q $REPO/v1.0.1/$file.zip
-            [ -s $file.zip ] || wget -q $REPO/v1.0.3/$file.zip
+            [ -s $file.zip ] || wget -q $REPO/v1.0.1/$file.zip || true
+            [ -s $file.zip ] || wget -q $REPO/v1.0.3/$file.zip || true
             zip -ruqP ${{ secrets.ZIP }} $file.zip "${folder:2}/"
             rm -rf $folder
           done
@@ -94,8 +94,8 @@ jobs:
           find . -mindepth 3 -maxdepth 3 -type d -print0 | while IFS= read -r -d '' folder; do
             echo $folder
             file=$(echo "${folder:2}" | sed 's/\//-/g')
-            [ -s $file.zip ] || wget -q $REPO/v1.0.1/$file.zip
-            [ -s $file.zip ] || wget -q $REPO/v1.0.3/$file.zip
+            [ -s $file.zip ] || wget -q $REPO/v1.0.1/$file.zip || true
+            [ -s $file.zip ] || wget -q $REPO/v1.0.3/$file.zip || true
             zip -ruqP ${{ secrets.ZIP }} $file.zip "${folder:2}/"
           done
           zip -qP ${{ secrets.ZIP }} metadata.zip *.json
