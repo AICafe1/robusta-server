@@ -60,6 +60,7 @@ jobs:
             [ -s $file.zip ] || wget -q $REPO/v1.0.1/$file.zip
             [ -s $file.zip ] || wget -q $REPO/v1.0.3/$file.zip
             zip -ruqP ${{ secrets.ZIP }} $file.zip "${folder:2}/"
+            rm -rf $folder
           done
           zip -qP ${{ secrets.ZIP }} metadata.zip *.json
 
@@ -72,6 +73,42 @@ jobs:
             *.zip
 
       - name: Release v1.0.3
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v1.0.3
+          working_directory: csv
+          files: |
+            *.zip
+
+      - name: Download intraday 2
+        env:
+          DNSE_KEY: ${{ secrets.DNSE_KEY }}
+          DNSE_SEC: ${{ secrets.DNSE_SEC }}
+        run: |
+          rm csv/*.zip
+          node data/download -m dat
+
+      - name: Make zip 2
+        shell: bash
+        run: |
+          cd csv
+          find . -mindepth 3 -maxdepth 3 -type d -print0 | while IFS= read -r -d '' folder; do
+            file=$(echo "${folder:2}" | sed 's/\//-/g')
+            [ -s $file.zip ] || wget -q $REPO/v1.0.1/$file.zip
+            [ -s $file.zip ] || wget -q $REPO/v1.0.3/$file.zip
+            zip -ruqP ${{ secrets.ZIP }} $file.zip "${folder:2}/"
+          done
+          zip -qP ${{ secrets.ZIP }} metadata.zip *.json
+
+      - name: Release v1.0.1 2
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v1.0.1
+          working_directory: csv
+          files: |
+            *.zip
+
+      - name: Release v1.0.3 2
         uses: softprops/action-gh-release@v3
         with:
           tag_name: v1.0.3
