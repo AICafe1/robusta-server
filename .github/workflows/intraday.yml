@@ -2,7 +2,7 @@ name: Intraday Data
 
 on:
   schedule:
-    - cron: '5 13 * * *'
+    - cron: '5 8 * * *'
   workflow_dispatch:
     inputs:
       debug:
