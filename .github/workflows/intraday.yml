@@ -47,7 +47,7 @@ jobs:
           DNSE_SEC: ${{ secrets.DNSE_SEC }}
         run: |
           [ -s csv/metadata.zip ] || wget -qP csv $REPO/v1.0.1/metadata.zip || true
-          [ -s csv/metadata.zip ] || wget -qP csv $REPO/v1.0.3/metadata.zip || true
+          [ -s csv/metadata.zip ] || wget -qP csv $REPO/v1.0.3/metadata.zip
           unzip -qP ${{ secrets.ZIP }} csv/metadata.zip -d csv
           node data/download -m dat
 
