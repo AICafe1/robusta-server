@@ -25,8 +25,8 @@ env:
   weekly: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'weekly' || github.event.inputs.group == 'all' }}
   daily: ${{ github.event.schedule == '1 1 * * 1-5' || github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'daily' || github.event.inputs.group == 'all' }}
   vnqa: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'vnqa' || github.event.inputs.group == 'all' }}
-  colab: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'colab' || github.event.inputs.group == 'all' }}
-  feather: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'feather' || github.event.inputs.group == 'all' }}
+  # colab: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'colab' || github.event.inputs.group == 'all' }}
+  # feather: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'feather' || github.event.inputs.group == 'all' }}
 
 jobs:
   download:
