@@ -26,6 +26,13 @@ jobs:
           token: ${{ secrets.PASS }}
           path: data
 
+      - name: src
+        uses: actions/checkout@v6
+        with:
+          repository: AICafe1/robusta-src
+          token: ${{ secrets.PASS }}
+          path: src
+
       - name: Node.js 24
         uses: actions/setup-node@v6
         with:
