@@ -8,6 +8,10 @@ on:
     - cron: '15 9 * * 6'
   workflow_dispatch:
     inputs:
+      debug:
+        type: boolean
+        description: VSCode
+        default: false
       group:
         type: choice
         description: Run group
@@ -60,7 +64,15 @@ jobs:
         with:
           node-version: 24
 
-      - run: npm install; cd data; npm install
+      - run: npm install --omit=dev; cd data; npm install
+
+      - name: VSCode
+        if: ${{ inputs.debug == true }}
+        env:
+          DNSE_KEY: ${{ secrets.DNSE_KEY }}
+          DNSE_SEC: ${{ secrets.DNSE_SEC }}
+          ZP: ${{ secrets.ZIP }}
+        uses: fawazahmed0/action-debug-vscode@main
 
       - name: Chrome curl
         run: cd /usr/local/bin; wget -q -O - https://github.com/AICafe1/robusta-server/releases/download/v1.0.2/chrome.tgz | tar -xz
