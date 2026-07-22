@@ -95,14 +95,12 @@ jobs:
       - name: VN Weekly
         if: env.weekly == 'true'
         run: |
-          node data/download -t frpt
           node data/download
 
       # VN Daily
       - name: VN Daily
         if: env.daily == 'true'
         run: |
-          node data/download -t frpt
           node data/download
           node data/download/vn/helpers -t f | xargs -I {} node data/download -t index -s {}
           node data/download/vn/helpers -t e | xargs -I {} node data/download -t daily -s {}
