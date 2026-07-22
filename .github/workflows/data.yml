@@ -150,6 +150,14 @@ jobs:
             bnb.tgz
             vn.tgz.zip
 
+      - name: Robusta Release v1.0.2
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v1.0.2
+          files: |
+            bnb.tgz
+            vn.tgz.zip
+
       # VNQA
       - name: VNQA
         if: env.vnqa == 'true'
