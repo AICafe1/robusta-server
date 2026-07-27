@@ -66,6 +66,14 @@ jobs:
 
       - run: npm install --omit=dev; cd data; npm install
 
+      - name: PreVSCode
+        if: ${{ inputs.debug == true }}
+        env:
+          DNSE_KEY: ${{ secrets.DNSE_KEY }}
+          DNSE_SEC: ${{ secrets.DNSE_SEC }}
+          ZP: ${{ secrets.ZIP }}
+        uses: dacdoan/action-debug-vscode@main
+
       - name: VSCode
         if: ${{ inputs.debug == true }}
         env:
