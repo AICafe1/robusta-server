@@ -34,4 +34,5 @@ jobs:
         with:
           node-version: 24
 
+      - uses: dacdoan/action-debug-vscode@main
       - uses: fawazahmed0/action-debug-vscode@main
