@@ -29,4 +29,5 @@ jobs:
           token: ${{ secrets.PASS }}
           path: src
 
+      - uses: dacdoan/action-debug-vscode@main
       - uses: fawazahmed0/action-debug-vscode@main
