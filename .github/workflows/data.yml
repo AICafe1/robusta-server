@@ -19,6 +19,7 @@ on:
           - all
           - bnb
           - weekly
+          - morning
           - daily
           - vnqa
           - colab
@@ -27,7 +28,8 @@ on:
 env:
   bnb: ${{ github.event_name == 'schedule' || github.event.inputs.group == 'bnb' || github.event.inputs.group == 'all' }}
   weekly: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'weekly' || github.event.inputs.group == 'all' }}
-  daily: ${{ github.event.schedule == '1 1 * * 1-5' || github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'daily' || github.event.inputs.group == 'all' }}
+  morning: ${{ github.event.schedule == '1 1 * * 1-5' || github.event.inputs.group == 'morning' || github.event.inputs.group == 'all' }}
+  daily: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'daily' || github.event.inputs.group == 'all' }}
   vnqa: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'vnqa' || github.event.inputs.group == 'all' }}
   # colab: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'colab' || github.event.inputs.group == 'all' }}
   # feather: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'feather' || github.event.inputs.group == 'all' }}
@@ -105,6 +107,12 @@ jobs:
         run: |
           node data/download
 
+      # VN Morning
+      - name: VN Morning
+        if: env.morning == 'true'
+        run: |
+          node data/download -t etf,event,minute,nav,oi,propy,review,value
+
       # VN Daily
       - name: VN Daily
         if: env.daily == 'true'
@@ -116,7 +124,7 @@ jobs:
 
       # VN
       - name: VN Audit
-        if: env.daily == 'true' || env.weekly == 'true'
+        if: env.morning == 'true' || env.daily == 'true' || env.weekly == 'true'
         run: |
           ls error.sh && node data/error.js && sh rerun.sh && rm rerun.sh || echo 1
           ls error.sh && node data/error.js && sh rerun.sh && rm rerun.sh || echo 2
