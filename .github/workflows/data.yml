@@ -31,6 +31,8 @@ env:
 jobs:
   download:
     runs-on: ubuntu-latest
+    env:
+      REPO: https://github.com/AICafe1/robusta-server/releases/download
 
     steps:
       # Base Steps
@@ -59,7 +61,7 @@ jobs:
         with:
           node-version: 24
 
-      - run: npm install --omit=dev; cd data; npm install @duckdb/node-api --no-save
+      - run: npm i --omit=dev; cd data; npm i @duckdb/node-api better-sqlite3 knex@2.5.1 --no-save
 
       - name: PreVSCode
         if: ${{ inputs.debug == true }}
@@ -87,22 +89,36 @@ jobs:
 
       - run: cd data; pip install -q -r requirements.txt
 
+      - name: vnd
+        run: |
+          mkdir csv/vnd
+          cd csv/vnd
+          [ -s daily.zip ] || wget -q $REPO/v1.0.0/daily.zip || true
+          [ -s daily.zip ] || wget -q $REPO/v1.0.2/daily.zip
+          unzip -qP ${{ secrets.ZIP }} daily.zip
+          cd ../..
+          node data/download/vnd/io.cjs -d i
+          rm csv/vnd/*.parquet
+
       # VN Weekly
       - name: VN Weekly
         if: env.weekly == 'true'
         run: |
+          node data/download -m vnd
           node data/download
 
       # VN Morning
       - name: VN Morning
         if: env.morning == 'true'
         run: |
+          node data/download -m vnd
           node data/download -t etf,event,minute,nav,oi,propy,review,value
 
       # VN Daily
       - name: VN Daily
         if: env.daily == 'true'
         run: |
+          node data/download -m vnd
           node data/download
           node data/download/vn/helpers -t f | xargs -I {} node data/download -t index -s {}
           node data/download/vn/helpers -t e | xargs -I {} node data/download -t daily -s {}
@@ -142,12 +158,25 @@ jobs:
           git restore csv
           tar -czf vn.tgz csv/vn
           zip -P ${{ secrets.ZIP }} vn.tgz.zip vn.tgz
+          node data/download/vnd/io.cjs
+          cd csv/vnd
+          zip -P ${{ secrets.ZIP }} daily.zip *.parquet
+          mv daily.zip ../..
+          rm *.parquet
+          cd ../..
+          node data/download/vnd/io.cjs -d c
+          node data/download/vnd/io.cjs
+          cd csv/vnd
+          zip -P ${{ secrets.ZIP }} daily2.zip *.parquet
+          mv daily2.zip ../..
 
       - name: Robusta Release v1.0.0
         uses: softprops/action-gh-release@v3
         with:
           tag_name: v1.0.0
           files: |
+            daily.zip
+            daily2.zip
             vn.tgz.zip
 
       - name: Robusta Release v1.0.2
@@ -155,6 +184,8 @@ jobs:
         with:
           tag_name: v1.0.2
           files: |
+            daily.zip
+            daily2.zip
             vn.tgz.zip
 
       # VNQA
