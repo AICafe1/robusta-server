@@ -113,7 +113,7 @@ jobs:
         if: env.morning == 'true'
         run: |
           node data/download -m vnd -v
-          node data/download -t etf,event,minute,nav,oi,propy,review,value
+          node data/download -t event,minute,review,value
 
       # VN Daily
       - name: VN Daily
