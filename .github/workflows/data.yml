@@ -17,22 +17,16 @@ on:
         description: Run group
         options:
           - all
-          - bnb
           - weekly
           - morning
           - daily
           - vnqa
-          - colab
-          - feather
 
 env:
-  bnb: ${{ github.event_name == 'schedule' || github.event.inputs.group == 'bnb' || github.event.inputs.group == 'all' }}
   weekly: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'weekly' || github.event.inputs.group == 'all' }}
   morning: ${{ github.event.schedule == '1 1 * * 1-5' || github.event.inputs.group == 'morning' || github.event.inputs.group == 'all' }}
   daily: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'daily' || github.event.inputs.group == 'all' }}
   vnqa: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'vnqa' || github.event.inputs.group == 'all' }}
-  # colab: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'colab' || github.event.inputs.group == 'all' }}
-  # feather: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'feather' || github.event.inputs.group == 'all' }}
 
 jobs:
   download:
@@ -41,7 +35,6 @@ jobs:
     steps:
       # Base Steps
       - name: robusta
-        if: github.event_name == 'schedule' || github.event.inputs.group != 'feather'
         uses: actions/checkout@v6
         with:
           repository: AICafe1/robusta
@@ -66,7 +59,7 @@ jobs:
         with:
           node-version: 24
 
-      - run: npm install --omit=dev; cd data; npm install
+      - run: npm install --omit=dev; cd data; npm install @duckdb/node-api --no-save
 
       - name: PreVSCode
         if: ${{ inputs.debug == true }}
@@ -93,13 +86,6 @@ jobs:
           python-version: '3.9'
 
       - run: cd data; pip install -q -r requirements.txt
-
-      # BNB Data
-      - name: BNB
-        if: env.bnb == 'true'
-        run: |
-          node data/download -m bnb -t review && node data/download -m bnb
-          node data/audit -m bnb
 
       # VN Weekly
       - name: VN Weekly
@@ -134,7 +120,7 @@ jobs:
       # Robusta push
       - name: Audit
         id: audit
-        if: github.event_name == 'schedule' || (github.event.inputs.group != 'feather' && github.event.inputs.group != 'colab' && github.event.inputs.group != 'vnqa')
+        if: github.event_name == 'schedule' || github.event.inputs.group != 'vnqa'
         run: cat audit.txt && (echo 'r=false' > $GITHUB_OUTPUT) || (echo 'r=true' > $GITHUB_OUTPUT)
 
       - name: Notify
@@ -154,7 +140,6 @@ jobs:
       - name: Robusta Release
         run: |
           git restore csv
-          tar -czf bnb.tgz csv/bnb
           tar -czf vn.tgz csv/vn
           zip -P ${{ secrets.ZIP }} vn.tgz.zip vn.tgz
 
@@ -163,7 +148,6 @@ jobs:
         with:
           tag_name: v1.0.0
           files: |
-            bnb.tgz
             vn.tgz.zip
 
       - name: Robusta Release v1.0.2
@@ -171,7 +155,6 @@ jobs:
         with:
           tag_name: v1.0.2
           files: |
-            bnb.tgz
             vn.tgz.zip
 
       # VNQA
@@ -191,39 +174,3 @@ jobs:
           git config user.email actions@github.com
           cd ..
           sh data/vnqa/data.sh
-
-      # Colab
-      - name: Colab
-        if: env.colab == 'true'
-        uses: actions/checkout@v6
-        with:
-          repository: AICafe1/robusta-colab
-          token: ${{ secrets.PASS }}
-          path: colab
-
-      - name: Colab Data
-        if: env.colab == 'true'
-        run: python data/colab > /dev/null; python data/colab -m bnb > /dev/null; cd colab; tar -czf vndata.tar.gz *; zip -P ${{ secrets.ZIP }} ../vndata.tar.gz.zip vndata.tar.gz
-
-      - name: Colab Release
-        if: env.colab == 'true'
-        uses: softprops/action-gh-release@v3
-        with:
-          repository: algo-stocks/data
-          token: ${{ secrets.PASS }}
-          tag_name: vndata
-          files: vndata.tar.gz.zip
-
-      # Feather
-      - name: Feather
-        if: env.feather == 'true'
-        run: sh data/vnqa/feather.sh
-
-      - name: Feather Release
-        if: env.feather == 'true'
-        uses: softprops/action-gh-release@v3
-        with:
-          repository: algo-stocks/data
-          token: ${{ secrets.PASS }}
-          tag_name: v2.0
-          files: CafeF.feather.zip
