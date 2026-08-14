@@ -95,9 +95,7 @@ jobs:
           [ -s daily.zip ] || wget -q $REPO/v1.0.0/daily.zip || true
           [ -s daily.zip ] || wget -q $REPO/v1.0.2/daily.zip
           unzip -qP ${{ secrets.ZIP }} daily.zip
-          cd ../..
-          node data/download/vnd/io.cjs -d i
-          rm csv/vnd/daily.zip
+          rm daily.zip
 
       # VN Weekly
       - name: VN Weekly
