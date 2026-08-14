@@ -104,21 +104,21 @@ jobs:
       - name: VN Weekly
         if: env.weekly == 'true'
         run: |
-          node data/download -m vnd
+          node data/download -m vnd -v
           node data/download
 
       # VN Morning
       - name: VN Morning
         if: env.morning == 'true'
         run: |
-          node data/download -m vnd
+          node data/download -m vnd -v
           node data/download -t etf,event,minute,nav,oi,propy,review,value
 
       # VN Daily
       - name: VN Daily
         if: env.daily == 'true'
         run: |
-          node data/download -m vnd
+          node data/download -m vnd -v
           node data/download
           node data/download/vn/helpers -t f | xargs -I {} node data/download -t index -s {}
           node data/download/vn/helpers -t e | xargs -I {} node data/download -t daily -s {}
