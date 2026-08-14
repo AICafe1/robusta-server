@@ -82,11 +82,14 @@ jobs:
         run: cd /usr/local/bin; wget -q -O - https://github.com/AICafe1/robusta-server/releases/download/v1.0.2/chrome.tgz | tar -xz
 
       - name: Python 3
+        if: env.vnqa == 'true'
         uses: actions/setup-python@v6
         with:
           python-version: '3.9'
 
-      - run: cd data; pip install -q -r requirements.txt
+      - name: Pip
+        if: env.vnqa == 'true'
+        run: cd data; pip install -q -r requirements.txt
 
       - name: vnd
         run: |
@@ -119,7 +122,6 @@ jobs:
           node data/download
           node data/download/vn/helpers -t f | xargs -I {} node data/download -t index -s {}
           node data/download/vn/helpers -t e | xargs -I {} node data/download -t daily -s {}
-          python data/download/vn/top.py
 
       # VN
       - name: VN Audit
