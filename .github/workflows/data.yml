@@ -168,6 +168,12 @@ jobs:
           cd csv/vnd
           zip -P ${{ secrets.ZIP }} daily2.zip *.sqlite
           mv daily2.zip ../..
+          cd ../..
+          node data/download/vnd/io.cjs -d c -y 1
+          node data/download/vnd/io.cjs
+          cd csv/vnd
+          zip -P ${{ secrets.ZIP }} daily1.zip *.parquet
+          mv daily1.zip ../..
 
       - name: Robusta Release v1.0.0
         uses: softprops/action-gh-release@v3
@@ -175,6 +181,7 @@ jobs:
           tag_name: v1.0.0
           files: |
             daily.zip
+            daily1.zip
             daily2.zip
             vn.tgz.zip
 
@@ -184,6 +191,7 @@ jobs:
           tag_name: v1.0.2
           files: |
             daily.zip
+            daily1.zip
             daily2.zip
             vn.tgz.zip
 
