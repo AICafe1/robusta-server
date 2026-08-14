@@ -93,6 +93,7 @@ jobs:
 
       - name: vnd
         run: |
+          mkdir env
           mkdir csv/vnd
           cd csv/vnd
           [ -s daily.zip ] || wget -q $REPO/v1.0.0/daily.zip || true
