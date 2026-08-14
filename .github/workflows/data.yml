@@ -97,7 +97,7 @@ jobs:
           unzip -qP ${{ secrets.ZIP }} daily.zip
           cd ../..
           node data/download/vnd/io.cjs -d i
-          rm csv/vnd/*.parquet
+          rm csv/vnd/daily.zip
 
       # VN Weekly
       - name: VN Weekly
@@ -157,16 +157,15 @@ jobs:
           git restore csv
           tar -czf vn.tgz csv/vn
           zip -P ${{ secrets.ZIP }} vn.tgz.zip vn.tgz
-          node data/download/vnd/io.cjs
+          node data/download/vnd/v.cjs
           cd csv/vnd
-          zip -P ${{ secrets.ZIP }} daily.zip *.parquet
+          zip -P ${{ secrets.ZIP }} daily.zip *.sqlite
           mv daily.zip ../..
-          rm *.parquet
           cd ../..
           node data/download/vnd/io.cjs -d c
-          node data/download/vnd/io.cjs
+          node data/download/vnd/v.cjs
           cd csv/vnd
-          zip -P ${{ secrets.ZIP }} daily2.zip *.parquet
+          zip -P ${{ secrets.ZIP }} daily2.zip *.sqlite
           mv daily2.zip ../..
 
       - name: Robusta Release v1.0.0
