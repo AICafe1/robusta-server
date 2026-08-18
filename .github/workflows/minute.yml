@@ -60,7 +60,11 @@ jobs:
       - name: Make zip
         run: |
           if [ -s minute.parquet ]; then
-            zip -qP ${{ secrets.ZIP }} minute-$(cat index.txt).zip minute.parquet
+            YEAR=$(head -c4 index.txt)
+            YM=$(cat index.txt)
+            mv minute.parquet minute-$YM.parquet
+            wget -q $REPO/v25.5.7/minute-$YEAR.zip
+            zip -qP ${{ secrets.ZIP }} minute-$YEAR.zip minute-$YM.parquet
           fi
 
       - name: Release v25.5.7
