@@ -39,6 +39,7 @@ jobs:
             unzip -qP ${{ secrets.ZIP }} foreign-trading-$YM.zip
             unzip -qP ${{ secrets.ZIP }} trades-$YM.zip
             echo $YM > index.txt
+            rm *.zip
           fi
 
       - name: PreVSCode
@@ -52,3 +53,20 @@ jobs:
         env:
           ZP: ${{ secrets.ZIP }}
         uses: fawazahmed0/action-debug-vscode@main
+
+      - name: Build parquet
+        run: python colab/dat/minute.py
+
+      - name: Make zip
+        run: |
+          if [ -s minute.parquet ]; then
+            zip -qP ${{ secrets.ZIP }} minute-$(cat index.txt).zip minute.parquet
+          fi
+
+      - name: Release v25.5.7
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v25.5.7
+          files: |
+            minute-*.zip
+            index.txt
