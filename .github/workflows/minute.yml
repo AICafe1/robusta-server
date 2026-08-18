@@ -1,0 +1,47 @@
+name: Minute Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      debug:
+        type: boolean
+        description: VSCode
+        default: false
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    env:
+      REPO: https://github.com/AICafe1/robusta-server/releases/download
+
+    steps:
+      - name: data
+        uses: actions/checkout@v6
+        with:
+          repository: AICafe1/robusta-data
+          token: ${{ secrets.PASS }}
+
+      - name: Python 3
+        if: env.vnqa == 'true'
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.9'
+
+      - name: Pip
+        run: pip install -q -r requirements.txt
+
+      - name: PreVSCode
+        if: ${{ inputs.debug == true }}
+        env:
+          DNSE_KEY: ${{ secrets.DNSE_KEY }}
+          DNSE_SEC: ${{ secrets.DNSE_SEC }}
+          ZP: ${{ secrets.ZIP }}
+        uses: dacdoan/action-debug-vscode@main
+
+      - name: VSCode
+        if: ${{ inputs.debug == true }}
+        env:
+          DNSE_KEY: ${{ secrets.DNSE_KEY }}
+          DNSE_SEC: ${{ secrets.DNSE_SEC }}
+          ZP: ${{ secrets.ZIP }}
+        uses: fawazahmed0/action-debug-vscode@main
