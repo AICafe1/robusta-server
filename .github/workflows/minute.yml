@@ -22,7 +22,6 @@ jobs:
           token: ${{ secrets.PASS }}
 
       - name: Python 3
-        if: env.vnqa == 'true'
         uses: actions/setup-python@v6
         with:
           python-version: '3.9'
@@ -33,15 +32,11 @@ jobs:
       - name: PreVSCode
         if: ${{ inputs.debug == true }}
         env:
-          DNSE_KEY: ${{ secrets.DNSE_KEY }}
-          DNSE_SEC: ${{ secrets.DNSE_SEC }}
           ZP: ${{ secrets.ZIP }}
         uses: dacdoan/action-debug-vscode@main
 
       - name: VSCode
         if: ${{ inputs.debug == true }}
         env:
-          DNSE_KEY: ${{ secrets.DNSE_KEY }}
-          DNSE_SEC: ${{ secrets.DNSE_SEC }}
           ZP: ${{ secrets.ZIP }}
         uses: fawazahmed0/action-debug-vscode@main
