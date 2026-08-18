@@ -29,6 +29,17 @@ jobs:
       - name: Pip
         run: pip install -q -r requirements.txt
 
+      - name: Prepare data
+        run: |
+          wget -q $REPO/v25.5.7/index.txt
+          YM=$(date -d "$(cat index.txt)-01 + 1 month" +%Y-%m)
+          if [[ "$(date -d "$YM-01 + 1 month + 9 days" +%Y-%m-%d)" < "$(date +%Y-%m-%d)" ]]; then
+            wget -q $REPO/v1.0.1/foreign-trading-$YM.zip
+            wget -q $REPO/v1.0.1/trades-$YM.zip
+            unzip -qP ${{ secrets.ZIP }} *.zip
+            echo $YM > index.txt
+          fi
+
       - name: PreVSCode
         if: ${{ inputs.debug == true }}
         env:
