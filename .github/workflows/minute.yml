@@ -11,6 +11,7 @@ on:
 jobs:
   download:
     runs-on: ubuntu-latest
+
     env:
       REPO: https://github.com/AICafe1/robusta-server/releases/download
 
@@ -33,14 +34,15 @@ jobs:
         run: |
           wget -q $REPO/v25.5.7/index.txt
           YM=$(date -d "$(cat index.txt)-01 + 1 month" +%Y-%m)
-          if [[ "$(date -d "$YM-01 + 1 month + 9 days" +%Y-%m-%d)" < "$(date +%Y-%m-%d)" ]]; then
-            wget -q $REPO/v1.0.1/foreign-trading-$YM.zip
-            wget -q $REPO/v1.0.1/trades-$YM.zip
-            unzip -qP ${{ secrets.ZIP }} foreign-trading-$YM.zip
-            unzip -qP ${{ secrets.ZIP }} trades-$YM.zip
+          wget -q $REPO/v1.0.1/foreign-trading-$YM.zip
+          wget -q $REPO/v1.0.1/trades-$YM.zip
+          unzip -qP ${{ secrets.ZIP }} foreign-trading-$YM.zip
+          unzip -qP ${{ secrets.ZIP }} trades-$YM.zip
+          echo $YM > index.tx2
+          if [[ "$(date -d "$YM-01 + 1 month + 7 days" +%Y-%m-%d)" < "$(date +%Y-%m-%d)" ]]; then
             echo $YM > index.txt
-            rm *.zip
           fi
+          rm *.zip
 
       - name: PreVSCode
         if: ${{ inputs.debug == true }}
@@ -60,8 +62,8 @@ jobs:
       - name: Make zip
         run: |
           if [ -s minute.parquet ]; then
-            YEAR=$(head -c4 index.txt)
-            YM=$(cat index.txt)
+            YEAR=$(head -c4 index.tx2)
+            YM=$(cat index.tx2)
             mv minute.parquet minute-$YM.parquet
             wget -q $REPO/v25.5.7/minute-$YEAR.zip || true
             zip -qP ${{ secrets.ZIP }} minute-$YEAR.zip minute-$YM.parquet
