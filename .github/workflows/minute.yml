@@ -11,7 +11,6 @@ on:
 jobs:
   download:
     runs-on: ubuntu-latest
-
     env:
       REPO: https://github.com/AICafe1/robusta-server/releases/download
 
@@ -43,16 +42,29 @@ jobs:
         uses: fawazahmed0/action-debug-vscode@main
 
       - name: Build parquet
-        run: python colab/dat/minute.py
-
-      - name: Make zip
         run: |
-          if [ -s minute.parquet ]; then
-            YEAR=$(head -c4 index.tx2)
-            YM=$(cat index.tx2)
-            mv minute.parquet minute-$YM.parquet
-            wget -q $REPO/v25.5.7/minute-$YEAR.zip || true
-            zip -qP ${{ secrets.ZIP }} minute-$YEAR.zip minute-$YM.parquet
+          wget -q $REPO/v25.5.7/index.txt
+          UP=$(date -d "$(cat index.txt) +1 day" -u +%Y-%m-%d)
+          if [[ "$UP" < "$(date -d "+15 hours" -u +%Y-%m-%d)" ]]; then
+            YM=$(echo $UP | head -c7)
+            wget -q $REPO/v1.0.1/foreign-trading-$YM.zip
+            wget -q $REPO/v1.0.1/trades-$YM.zip
+            unzip -qP ${{ secrets.ZIP }} foreign-trading-$YM.zip
+            unzip -qP ${{ secrets.ZIP }} trades-$YM.zip
+            rm *.zip
+            python colab/dat/minute.py
+            if [ -s minute.parquet ]; then
+              YEAR=$(echo $UP | head -c4)
+              mv minute.parquet minute-$YM.parquet
+              wget -q $REPO/v25.5.7/minute-$YEAR.zip || true
+              zip -qP ${{ secrets.ZIP }} minute-$YEAR.zip minute-$YM.parquet
+            fi
+            EOM=$(date -d "$YM-01 +1 month -1 day" -u +%Y-%m-%d)
+            if [[ "$EOM" < "$(date -d "-9 hours" -u +%Y-%m-%d)" ]]; then
+              echo $EOM > index.txt
+            else
+              echo $UP > index.txt
+            fi
           fi
 
       - name: Release v25.5.7
