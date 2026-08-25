@@ -113,7 +113,16 @@ jobs:
         if: env.morning == 'true'
         run: |
           node data/download -m vnd -v
-          node data/download -t event,minute,review,value
+          node data/download -t event,review,value
+          cd csv/vnd
+          MINUTE=minute-$(date -d "-1 day" -u +%Y).zip
+          [ -s $MINUTE ] || wget -q $REPO/v25.5.7/$MINUTE || true
+          if [ -s $MINUTE ]; then
+            unzip -qP ${{ secrets.ZIP }} $MINUTE
+            rm $MINUTE
+            cd ../..
+            node data/download -t minutef -s VN30F1M,VN30F2M
+          fi
 
       # VN Daily
       - name: VN Daily
