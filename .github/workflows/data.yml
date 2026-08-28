@@ -1,9 +1,6 @@
 name: data
 
 on:
-  schedule:
-    - cron: '15 9 * * 1-5'
-    - cron: '15 9 * * 6'
   workflow_dispatch:
     inputs:
       debug:
@@ -21,10 +18,10 @@ on:
           - vnqa
 
 env:
-  weekly: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'weekly' || github.event.inputs.group == 'all' }}
+  weekly: ${{ github.event.inputs.group == 'weekly' || github.event.inputs.group == 'all' }}
   morning: ${{ github.event.inputs.group == 'morning' || github.event.inputs.group == 'all' }}
-  daily: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'daily' || github.event.inputs.group == 'all' }}
-  vnqa: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'vnqa' || github.event.inputs.group == 'all' }}
+  daily: ${{ github.event.inputs.group == 'daily' || github.event.inputs.group == 'all' }}
+  vnqa: ${{ github.event.inputs.group == 'daily' || github.event.inputs.group == 'vnqa' || github.event.inputs.group == 'all' }}
 
 jobs:
   download:
@@ -182,7 +179,7 @@ jobs:
       # Robusta push
       - name: Audit
         id: audit
-        if: github.event_name == 'schedule' || github.event.inputs.group != 'vnqa'
+        if: github.event.inputs.group != 'vnqa'
         run: cat audit.txt && (echo 'r=false' > $GITHUB_OUTPUT) || (echo 'r=true' > $GITHUB_OUTPUT)
 
       - name: Notify
