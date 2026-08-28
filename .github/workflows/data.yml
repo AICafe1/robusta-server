@@ -2,7 +2,6 @@ name: data
 
 on:
   schedule:
-    - cron: '1 1 * * 1-5'
     - cron: '15 9 * * 1-5'
     - cron: '15 9 * * 6'
   workflow_dispatch:
@@ -23,7 +22,7 @@ on:
 
 env:
   weekly: ${{ github.event.schedule == '15 9 * * 6' || github.event.inputs.group == 'weekly' || github.event.inputs.group == 'all' }}
-  morning: ${{ github.event.schedule == '1 1 * * 1-5' || github.event.inputs.group == 'morning' || github.event.inputs.group == 'all' }}
+  morning: ${{ github.event.inputs.group == 'morning' || github.event.inputs.group == 'all' }}
   daily: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'daily' || github.event.inputs.group == 'all' }}
   vnqa: ${{ github.event.schedule == '15 9 * * 1-5' || github.event.inputs.group == 'vnqa' || github.event.inputs.group == 'all' }}
 
