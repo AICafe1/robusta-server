@@ -38,6 +38,9 @@ jobs:
 
       - run: npm install; mkdir csv; cd data; npm install
 
+      - name: Chrome curl
+        run: cd /usr/local/bin; wget -q -O - https://github.com/AICafe1/robusta-server/releases/download/v1.0.2/chrome.tgz | tar -xz
+
       - name: PreVSCode
         if: ${{ inputs.debug == true }}
         env:
