@@ -81,7 +81,7 @@ jobs:
         if: env.morning == 'true' || env.vnqa == 'true'
         uses: actions/setup-python@v6
         with:
-          python-version: '3.9'
+          python-version: '3.12'
 
       - name: Pip
         if: env.morning == 'true' || env.vnqa == 'true'
